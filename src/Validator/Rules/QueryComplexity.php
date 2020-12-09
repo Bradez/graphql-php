@@ -77,14 +77,14 @@ class QueryComplexity extends QuerySecurityRule
                     return Visitor::skipNode();
                 },
                 NodeKind::OPERATION_DEFINITION => [
-                    'leave' => function (OperationDefinitionNode $operationDefinition) use ($context, &$complexity) : void {
+                    'leave' => function (OperationDefinitionNode $operationDefinition) use ($context) : void {
                         $errors = $context->getErrors();
 
                         if (count($errors) > 0) {
                             return;
                         }
 
-                        $this->complexity = $this->fieldComplexity($operationDefinition, $complexity);
+                        $this->complexity = $this->fieldComplexity($operationDefinition, $this->complexity);
 
                         if ($this->getQueryComplexity() <= $this->getMaxQueryComplexity()) {
                             return;
